@@ -42,7 +42,7 @@ namespace HACT
 
             newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.5f, "Decimal. Default is 2.5");
             newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 25f, "Default is 25");
-            newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 5.3f, "Default is 5.3");
+            newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 6f, "Default is 6");
             newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 1f, "Default is 1");
 
             NewrotoxinVFX.Create();

@@ -65,6 +65,7 @@ namespace HIFUAcridTweaks.Skills
                     isCrit = Util.CheckRoll(critStat, characterBody.master),
                     radius = Main.newrotoxinRadius.Value,
                     falloffModel = BulletAttack.FalloffModel.None,
+                    stopperMask = LayerIndex.noCollision.intVal,
                     procCoefficient = Main.newrotoxinProcCoeff.Value,
                     maxDistance = Main.newrotoxinRange.Value,
                     smartCollision = true,
