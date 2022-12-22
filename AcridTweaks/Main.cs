@@ -40,10 +40,10 @@ namespace HACT
             HACTLogger = Logger;
             HACTConfig = Config;
 
-            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.3f, "Decimal. Default is 2.2");
-            newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 19f, "Default is 19");
-            newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 5f, "Default is 5");
-            newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 0.7f, "Default is 0.7");
+            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.5f, "Decimal. Default is 2.5");
+            newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 25f, "Default is 25");
+            newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 5.3f, "Default is 5.3");
+            newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 1f, "Default is 1");
 
             NewrotoxinVFX.Create();
             NewrotoxinSD.Create();
@@ -78,8 +78,6 @@ namespace HACT
                     based.Init();
                 }
             }
-
-            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         public bool ValidateTweak(TweakBase tb)

@@ -32,7 +32,7 @@ namespace HIFUAcridTweaks.Skilldefs
             sd.cancelSprintingOnActivation = false;
             sd.canceledFromSprinting = false;
             sd.isCombatSkill = true;
-            sd.mustKeyPress = false;
+            sd.mustKeyPress = true;
 
             sd.icon = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Croco/CrocoSpit.asset").WaitForCompletion().icon;
             sd.skillNameToken = nameToken;
@@ -40,7 +40,7 @@ namespace HIFUAcridTweaks.Skilldefs
             sd.keywordTokens = new string[] { "KEYWORD_AGILE" };
 
             LanguageAPI.Add("HACT_CROCO_SECONDARY_NAME", "Neurotoxin");
-            LanguageAPI.Add("HACT_CROCO_SECONDARY_DESCRIPTION", "<style=cIsUtility>Agile</style>. Spit toxic bile in a small radius for <style=cIsDamage>" + (Main.newrotoxinDamage.Value * 100) + "% damage</style>.");
+            LanguageAPI.Add("HACT_CROCO_SECONDARY_DESCRIPTION", "<style=cIsUtility>Agile</style>. Emit a toxic cloud in a small radius for <style=cIsDamage>" + (Main.newrotoxinDamage.Value * 100) + "% damage</style>.");
             ContentAddition.AddSkillDef(sd);
         }
     }

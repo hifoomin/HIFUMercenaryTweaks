@@ -19,7 +19,7 @@ namespace HIFUAcridTweaks.Skills
         {
             damage = ConfigOption(5.5f, "Damage", "Decimal. Vanilla is 5.5");
             cooldown = ConfigOption(8f, "Cooldown", "Vanilla is 10");
-            cdr = ConfigOption(1f, "Cooldown Reduction Per Hit", "Vanilla is 2");
+            cdr = ConfigOption(1.5f, "Cooldown Reduction Per Hit", "Vanilla is 2");
             base.Init();
         }
 

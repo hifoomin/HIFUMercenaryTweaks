@@ -65,13 +65,12 @@ namespace HIFUAcridTweaks.Skills
                     isCrit = Util.CheckRoll(critStat, characterBody.master),
                     radius = Main.newrotoxinRadius.Value,
                     falloffModel = BulletAttack.FalloffModel.None,
-                    stopperMask = LayerIndex.world.mask,
                     procCoefficient = Main.newrotoxinProcCoeff.Value,
                     maxDistance = Main.newrotoxinRange.Value,
                     smartCollision = true,
                     damageType = damageType,
                 }.Fire();
-                EffectManager.SpawnEffect(effectPrefab2, new EffectData { origin = aimRay.origin, scale = 1f }, true);
+                EffectManager.SpawnEffect(effectPrefab2, new EffectData { origin = aimRay.origin, scale = 20f, rotation = Util.QuaternionSafeLookRotation(aimRay.direction) }, true);
             }
         }
 
