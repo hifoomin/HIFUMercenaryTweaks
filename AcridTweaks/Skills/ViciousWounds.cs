@@ -30,8 +30,10 @@ namespace HIFUAcridTweaks.Skills
 
         private void Slash_OnEnter(On.EntityStates.Croco.Slash.orig_OnEnter orig, EntityStates.Croco.Slash self)
         {
-            //self.baseDuration = duration;
-            Debug.Log("baseDuration is " + self.baseDuration);
+            self.baseDuration = duration;
+            self.duration = duration / self.attackSpeedStat;
+            EntityStates.Croco.Slash.comboFinisherBaseDurationBeforeInterruptable = duration / 1.5f;
+            EntityStates.Croco.Slash.baseDurationBeforeInterruptable = duration / 2.727272727f;
             orig(self);
         }
 
@@ -41,8 +43,6 @@ namespace HIFUAcridTweaks.Skills
             if (disableCancel)
             {
                 v.canceledFromSprinting = false;
-                v.forceSprintDuringState = true;
-                v.cancelSprintingOnActivation = false;
             }
         }
     }

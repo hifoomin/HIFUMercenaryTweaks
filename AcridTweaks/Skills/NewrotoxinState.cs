@@ -68,7 +68,7 @@ namespace HIFUAcridTweaks.Skills
                     stopperMask = LayerIndex.world.mask,
                     procCoefficient = Main.newrotoxinProcCoeff.Value,
                     maxDistance = Main.newrotoxinRange.Value,
-                    smartCollision = false,
+                    smartCollision = true,
                     damageType = damageType,
                 }.Fire();
                 EffectManager.SpawnEffect(effectPrefab2, new EffectData { origin = aimRay.origin, scale = 1f }, true);

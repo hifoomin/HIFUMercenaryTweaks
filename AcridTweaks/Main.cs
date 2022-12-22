@@ -40,8 +40,8 @@ namespace HACT
             HACTLogger = Logger;
             HACTConfig = Config;
 
-            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2f, "Decimal. Default is 2");
-            newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 13f, "Default is 13");
+            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.3f, "Decimal. Default is 2.2");
+            newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 19f, "Default is 19");
             newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 5f, "Default is 5");
             newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 0.7f, "Default is 0.7");
 

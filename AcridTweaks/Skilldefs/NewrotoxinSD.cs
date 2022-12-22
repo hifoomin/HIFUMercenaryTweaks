@@ -40,7 +40,7 @@ namespace HIFUAcridTweaks.Skilldefs
             sd.keywordTokens = new string[] { "KEYWORD_AGILE" };
 
             LanguageAPI.Add("HACT_CROCO_SECONDARY_NAME", "Neurotoxin");
-            LanguageAPI.Add("HACT_CROCO_SECONDARY_DESCRIPTION", "<style=cIsUtility>Agile</style>. Spit toxic bile for <style=cIsDamage>" + (Main.newrotoxinDamage.Value * 100) + "% damage</style>.");
+            LanguageAPI.Add("HACT_CROCO_SECONDARY_DESCRIPTION", "<style=cIsUtility>Agile</style>. Spit toxic bile in a small radius for <style=cIsDamage>" + (Main.newrotoxinDamage.Value * 100) + "% damage</style>.");
             ContentAddition.AddSkillDef(sd);
         }
     }
