@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace HAT
+namespace HACT
 {
-    public abstract class TweakBase<T> : TweakBase where T : TweakBase<T>
+    public abstract class MiscBase<T> : MiscBase where T : MiscBase<T>
     {
         public static T instance { get; set; }
 
-        public TweakBase()
+        public MiscBase()
         {
             if (instance != null)
             {
