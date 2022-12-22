@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using EntityStates.VoidSurvivor;
+using HACT;
 using RoR2;
 using RoR2.Audio;
 using RoR2.Projectile;
@@ -18,13 +19,12 @@ namespace HIFUAcridTweaks.Skills
         public string attackSound = "Play_acrid_m2_shoot";
         public float bloom = 0.3f;
         public float force = 500f;
-        public float radius = 6f;
-        public float range = 11f;
-        public float procCoeff = 0.7f;
-        public float damage = 2f;
 
         [SerializeField]
         public GameObject effectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Croco/MuzzleflashCroco.prefab").WaitForCompletion();
+
+        [SerializeField]
+        public GameObject effectPrefab2 = VFX.NewrotoxinVFX.ghost;
 
         public override void OnEnter()
         {
@@ -44,7 +44,7 @@ namespace HIFUAcridTweaks.Skills
 
             if (effectPrefab)
             {
-                EffectManager.SimpleMuzzleFlash(effectPrefab, gameObject, muzz, false);
+                EffectManager.SimpleMuzzleFlash(effectPrefab, gameObject, muzz, true);
             }
             if (isAuthority)
             {
@@ -58,19 +58,20 @@ namespace HIFUAcridTweaks.Skills
                     aimVector = aimRay.direction,
                     minSpread = 0f,
                     maxSpread = 0f,
-                    damage = damageStat * damage,
+                    damage = damageStat * Main.newrotoxinDamage.Value,
                     force = force,
                     muzzleName = muzz,
                     hitEffectPrefab = effectPrefab,
                     isCrit = Util.CheckRoll(critStat, characterBody.master),
-                    radius = radius,
+                    radius = Main.newrotoxinRadius.Value,
                     falloffModel = BulletAttack.FalloffModel.None,
                     stopperMask = LayerIndex.world.mask,
-                    procCoefficient = procCoeff,
-                    maxDistance = range,
+                    procCoefficient = Main.newrotoxinProcCoeff.Value,
+                    maxDistance = Main.newrotoxinRange.Value,
                     smartCollision = false,
                     damageType = damageType,
                 }.Fire();
+                EffectManager.SpawnEffect(effectPrefab2, new EffectData { origin = aimRay.origin, scale = 1f }, true);
             }
         }
 

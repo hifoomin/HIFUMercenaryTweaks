@@ -1,5 +1,6 @@
 ﻿using HACT;
 using RoR2.Skills;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace HIFUAcridTweaks.Skills
@@ -29,7 +30,8 @@ namespace HIFUAcridTweaks.Skills
 
         private void Slash_OnEnter(On.EntityStates.Croco.Slash.orig_OnEnter orig, EntityStates.Croco.Slash self)
         {
-            self.baseDuration = duration;
+            //self.baseDuration = duration;
+            Debug.Log("baseDuration is " + self.baseDuration);
             orig(self);
         }
 
@@ -39,6 +41,8 @@ namespace HIFUAcridTweaks.Skills
             if (disableCancel)
             {
                 v.canceledFromSprinting = false;
+                v.forceSprintDuringState = true;
+                v.cancelSprintingOnActivation = false;
             }
         }
     }

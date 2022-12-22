@@ -9,11 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HIFUAcridTweaks.VFX;
 
 namespace HACT
 {
     [BepInDependency(LanguageAPI.PluginGUID)]
     [BepInDependency(R2APIContentManager.PluginGUID)]
+    [BepInDependency(PrefabAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class Main : BaseUnityPlugin
     {
@@ -28,10 +30,22 @@ namespace HACT
 
         private string version = PluginVersion;
 
+        public static ConfigEntry<float> newrotoxinDamage;
+        public static ConfigEntry<float> newrotoxinRange;
+        public static ConfigEntry<float> newrotoxinRadius;
+        public static ConfigEntry<float> newrotoxinProcCoeff;
+
         public void Awake()
         {
             HACTLogger = Logger;
             HACTConfig = Config;
+
+            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2f, "Decimal. Default is 2");
+            newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 13f, "Default is 13");
+            newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 5f, "Default is 5");
+            newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 0.7f, "Default is 0.7");
+
+            NewrotoxinVFX.Create();
             NewrotoxinSD.Create();
             ReplaceSkill.Create();
 
