@@ -17,7 +17,7 @@ namespace HIFUAcridTweaks.Skills
 
         public override void Init()
         {
-            damage = ConfigOption(5.5f, "Damage", "Decimal. Vanilla is 5.5");
+            damage = ConfigOption(5f, "Damage", "Decimal. Vanilla is 5.5");
             cooldown = ConfigOption(8f, "Cooldown", "Vanilla is 10");
             cdr = ConfigOption(1.5f, "Cooldown Reduction Per Hit", "Vanilla is 2");
             base.Init();
@@ -26,8 +26,15 @@ namespace HIFUAcridTweaks.Skills
         public override void Hooks()
         {
             On.EntityStates.Croco.BaseLeap.OnEnter += BaseLeap_OnEnter;
+            On.EntityStates.Croco.BaseLeap.OnExit += BaseLeap_OnExit;
             On.EntityStates.Croco.ChainableLeap.DoImpactAuthority += ChainableLeap_DoImpactAuthority;
             Changes();
+        }
+
+        private void BaseLeap_OnExit(On.EntityStates.Croco.BaseLeap.orig_OnExit orig, EntityStates.Croco.BaseLeap self)
+        {
+            orig(self);
+            self.characterBody.isSprinting = true;
         }
 
         private void ChainableLeap_DoImpactAuthority(On.EntityStates.Croco.ChainableLeap.orig_DoImpactAuthority orig, EntityStates.Croco.ChainableLeap self)

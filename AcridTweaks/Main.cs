@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HIFUAcridTweaks.VFX;
+using UnityEngine.AddressableAssets;
+using UnityEngine;
+using RoR2;
+using RoR2.Skills;
 
 namespace HACT
 {
@@ -40,10 +44,22 @@ namespace HACT
             HACTLogger = Logger;
             HACTConfig = Config;
 
-            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.5f, "Decimal. Default is 2.5");
+            newrotoxinDamage = Config.Bind("Secondary : Neurotoxin", "Damage", 2.6f, "Decimal. Default is 2.6");
             newrotoxinRange = Config.Bind("Secondary : Neurotoxin", "Range", 25f, "Default is 25");
             newrotoxinRadius = Config.Bind("Secondary : Neurotoxin", "Radius", 6f, "Default is 6");
             newrotoxinProcCoeff = Config.Bind("Secondary : Neurotoxin", "Proc Coefficient", 1f, "Default is 1");
+
+            var acrid = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Croco/CrocoBody.prefab").WaitForCompletion();
+            var esm = acrid.AddComponent<EntityStateMachine>();
+            esm.customName = "Leap";
+            esm.initialStateType = new(typeof(EntityStates.Idle));
+            esm.mainStateType = new(typeof(EntityStates.Idle));
+
+            var cleap = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Croco/CrocoLeap.asset").WaitForCompletion();
+            cleap.activationStateMachineName = "Leap";
+
+            var fleap = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Croco/CrocoChainableLeap.asset").WaitForCompletion();
+            fleap.activationStateMachineName = "Leap";
 
             NewrotoxinVFX.Create();
             NewrotoxinSD.Create();

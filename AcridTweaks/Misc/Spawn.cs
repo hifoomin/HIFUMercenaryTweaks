@@ -22,13 +22,13 @@ namespace HIFUAcridTweaks.Misc
 
         private void WakeUp_OnEnter(On.EntityStates.Croco.WakeUp.orig_OnEnter orig, EntityStates.Croco.WakeUp self)
         {
-            EntityStates.Croco.WakeUp.duration = 2f;
+            EntityStates.Croco.WakeUp.duration = 1.2f;
             orig(self);
         }
 
         private void Spawn_OnEnter(On.EntityStates.Croco.Spawn.orig_OnEnter orig, EntityStates.Croco.Spawn self)
         {
-            EntityStates.Croco.Spawn.minimumSleepDuration = 1f;
+            EntityStates.Croco.Spawn.minimumSleepDuration = 0.7f;
             orig(self);
         }
     }
