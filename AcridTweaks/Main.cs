@@ -27,7 +27,7 @@ namespace HACT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUAcridTweaks";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.2";
 
         public static ConfigFile HACTConfig;
         public static ManualLogSource HACTLogger;

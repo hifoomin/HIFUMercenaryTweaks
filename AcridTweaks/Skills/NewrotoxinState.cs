@@ -92,7 +92,7 @@ namespace HIFUAcridTweaks.Skills
 
         public override InterruptPriority GetMinimumInterruptPriority()
         {
-            return InterruptPriority.Skill;
+            return InterruptPriority.PrioritySkill;
         }
     }
 }

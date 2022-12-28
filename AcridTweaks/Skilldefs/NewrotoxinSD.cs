@@ -17,7 +17,7 @@ namespace HIFUAcridTweaks.Skilldefs
             sd = ScriptableObject.CreateInstance<SkillDef>();
             sd.activationState = new(typeof(NewrotoxinState));
             sd.activationStateMachineName = "Weapon";
-            sd.interruptPriority = EntityStates.InterruptPriority.PrioritySkill;
+            sd.interruptPriority = EntityStates.InterruptPriority.Skill;
 
             sd.baseRechargeInterval = 4f;
             sd.baseMaxStock = 1;
@@ -32,7 +32,7 @@ namespace HIFUAcridTweaks.Skilldefs
             sd.cancelSprintingOnActivation = false;
             sd.canceledFromSprinting = false;
             sd.isCombatSkill = true;
-            sd.mustKeyPress = true;
+            sd.mustKeyPress = false;
 
             sd.icon = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Croco/CrocoSpit.asset").WaitForCompletion().icon;
             sd.skillNameToken = nameToken;
