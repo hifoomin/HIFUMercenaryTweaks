@@ -27,7 +27,7 @@ namespace HACT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUAcridTweaks";
-        public const string PluginVersion = "1.0.2";
+        public const string PluginVersion = "1.0.3";
 
         public static ConfigFile HACTConfig;
         public static ManualLogSource HACTLogger;
@@ -60,6 +60,11 @@ namespace HACT
 
             var fleap = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Croco/CrocoChainableLeap.asset").WaitForCompletion();
             fleap.activationStateMachineName = "Leap";
+
+            var esm2 = acrid.AddComponent<EntityStateMachine>();
+            esm2.customName = "Neurotoxin";
+            esm2.initialStateType = new(typeof(EntityStates.Idle));
+            esm2.mainStateType = new(typeof(EntityStates.Idle));
 
             NewrotoxinVFX.Create();
             NewrotoxinSD.Create();

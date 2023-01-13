@@ -16,7 +16,7 @@ namespace HIFUAcridTweaks.Skilldefs
         {
             sd = ScriptableObject.CreateInstance<SkillDef>();
             sd.activationState = new(typeof(NewrotoxinState));
-            sd.activationStateMachineName = "Weapon";
+            sd.activationStateMachineName = "Neurotoxin";
             sd.interruptPriority = EntityStates.InterruptPriority.Skill;
 
             sd.baseRechargeInterval = 4f;

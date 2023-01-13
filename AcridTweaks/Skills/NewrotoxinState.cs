@@ -14,7 +14,7 @@ namespace HIFUAcridTweaks.Skills
     public class NewrotoxinState : BaseState
     {
         public static CrocoDamageTypeController crocoDamageTypeController;
-        public float baseDuration = 1f;
+        public float baseDuration = 0.2f;
         public float duration;
         public string attackSound = "Play_acrid_m2_shoot";
         public float bloom = 0.3f;
