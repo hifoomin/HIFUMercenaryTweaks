@@ -30,8 +30,8 @@ namespace HIFUMercenaryTweaks.Skills
         {
             if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
             {
-                var finalDamageCoefficient = self.damageCoefficient + (self.damageCoefficient * ((self.attackSpeedStat - 1) * (1 / self.damageCoefficient)));
-                self.damageCoefficient = finalDamageCoefficient;
+                var finalDamageCoefficient = self.delayedDamageCoefficient + (self.delayedDamageCoefficient * ((self.attackSpeedStat - 1) * (1 / self.delayedDamageCoefficient)));
+                self.delayedDamageCoefficient = finalDamageCoefficient;
             }
 
             orig(self, overlapAttack);
