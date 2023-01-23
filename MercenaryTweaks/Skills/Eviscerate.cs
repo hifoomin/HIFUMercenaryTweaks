@@ -103,10 +103,11 @@ namespace HIFUMercenaryTweaks.Skills
                     searchOrigin = self.transform.position,
                     searchDirection = self.inputBank.aimDirection,
                     maxDistanceFilter = Evis.maxRadius,
-                    teamMaskFilter = TeamMask.GetUnprotectedTeams(self.GetTeam()),
+                    // teamMaskFilter = TeamMask.GetUnprotectedTeams(self.GetTeam()),
+                    teamMaskFilter = TeamMask.AllExcept(self.GetTeam()),
                     sortMode = BullseyeSearch.SortMode.Angle
                 };
-                bullseyeSearch.teamMaskFilter.RemoveTeam(self.characterBody.teamComponent.teamIndex);
+                // bullseyeSearch.teamMaskFilter.RemoveTeam(self.characterBody.teamComponent.teamIndex);
                 bullseyeSearch.RefreshCandidates();
                 bullseyeSearch.FilterOutGameObject(self.gameObject);
                 return bullseyeSearch.GetResults().FirstOrDefault();

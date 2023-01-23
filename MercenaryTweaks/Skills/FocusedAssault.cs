@@ -30,7 +30,7 @@ namespace HIFUMercenaryTweaks.Skills
         {
             if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
             {
-                var finalDamageCoefficient = self.delayedDamageCoefficient + (self.delayedDamageCoefficient * ((self.attackSpeedStat - 1) * (1 / self.delayedDamageCoefficient)));
+                var finalDamageCoefficient = self.delayedDamageCoefficient + (self.delayedDamageCoefficient * ((self.attackSpeedStat - 1) * 0.4285714f));
                 self.delayedDamageCoefficient = finalDamageCoefficient;
             }
 

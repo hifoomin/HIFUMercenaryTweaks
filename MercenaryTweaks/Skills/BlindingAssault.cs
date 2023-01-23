@@ -1,5 +1,6 @@
 ﻿using HMT;
 using EntityStates.Merc;
+using UnityEngine;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -23,16 +24,21 @@ namespace HIFUMercenaryTweaks.Skills
         {
             On.EntityStates.Merc.PrepAssaulter2.OnEnter += PrepAssaulter2_OnEnter;
             On.EntityStates.Merc.Assaulter2.OnEnter += Assaulter2_OnEnter;
+            On.EntityStates.Merc.Assaulter2.AuthorityModifyOverlapAttack += Assaulter2_AuthorityModifyOverlapAttack;
+        }
+
+        private void Assaulter2_AuthorityModifyOverlapAttack(On.EntityStates.Merc.Assaulter2.orig_AuthorityModifyOverlapAttack orig, Assaulter2 self, RoR2.OverlapAttack overlapAttack)
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                var finalDamageCoefficient = 3f + (3f * ((self.attackSpeedStat - 1) * (1 / 3f)));
+                self.damageCoefficient = finalDamageCoefficient;
+            }
+            orig(self, overlapAttack);
         }
 
         private void Assaulter2_OnEnter(On.EntityStates.Merc.Assaulter2.orig_OnEnter orig, Assaulter2 self)
         {
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
-            {
-                var finalDamageCoefficient = self.damageCoefficient + (self.damageCoefficient * ((self.attackSpeedStat - 1) * (1 / self.damageCoefficient)));
-                self.damageCoefficient = finalDamageCoefficient;
-            }
-
             orig(self);
 
             if (scaleDurationWithAttackSpeed == false)
