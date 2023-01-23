@@ -1,6 +1,6 @@
 ﻿using R2API;
 
-namespace HACT
+namespace HMT
 {
     public abstract class TweakBase
     {
@@ -11,7 +11,7 @@ namespace HACT
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            return Main.HACTConfig.Bind<T>(Name, name, value, description).Value;
+            return Main.HMTConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();
@@ -24,9 +24,9 @@ namespace HACT
         public virtual void Init()
         {
             Hooks();
-            string descriptionToken = "CROCO_" + SkillToken.ToUpper() + "_DESCRIPTION";
+            string descriptionToken = "MERC_" + SkillToken.ToUpper() + "_DESCRIPTION";
             LanguageAPI.Add(descriptionToken, DescText);
-            Main.HACTLogger.LogInfo("Added " + Name);
+            Main.HMTLogger.LogInfo("Added " + Name);
         }
     }
 }

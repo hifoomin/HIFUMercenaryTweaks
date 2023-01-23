@@ -1,4 +1,4 @@
-﻿namespace HACT
+﻿namespace HMT
 {
     public abstract class MiscBase
     {
@@ -7,7 +7,7 @@
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            return Main.HACTConfig.Bind<T>(Name, name, value, description).Value;
+            return Main.HMTConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();
@@ -20,7 +20,7 @@
         public virtual void Init()
         {
             Hooks();
-            Main.HACTLogger.LogInfo("Added " + Name);
+            Main.HMTLogger.LogInfo("Added " + Name);
         }
     }
 }
