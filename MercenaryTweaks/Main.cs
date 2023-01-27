@@ -79,8 +79,6 @@ namespace HMT
                 var evis = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvis.asset").WaitForCompletion();
                 evis.activationStateMachineName = "Evis";
             }
-
-            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         public bool ValidateTweak(TweakBase tb)
