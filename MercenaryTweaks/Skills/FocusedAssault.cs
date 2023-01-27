@@ -28,9 +28,9 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void FocusedAssaultDash_AuthorityModifyOverlapAttack(On.EntityStates.Merc.FocusedAssaultDash.orig_AuthorityModifyOverlapAttack orig, FocusedAssaultDash self, RoR2.OverlapAttack overlapAttack)
         {
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value && self.isAuthority)
             {
-                var finalDamageCoefficient = self.delayedDamageCoefficient + (self.delayedDamageCoefficient * ((self.attackSpeedStat - 1) * 0.4285714f));
+                var finalDamageCoefficient = 7f + (7f * ((self.attackSpeedStat - 1) * 0.4285714f));
                 self.delayedDamageCoefficient = finalDamageCoefficient;
             }
 

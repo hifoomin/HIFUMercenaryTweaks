@@ -57,7 +57,7 @@ namespace HIFUMercenaryTweaks.Skills
 
             orig(self);
 
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value && self.isAuthority)
             {
                 var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * (self.overlapAttack.damage / 432f)));
                 self.overlapAttack.damage = finalDamageCoefficient;

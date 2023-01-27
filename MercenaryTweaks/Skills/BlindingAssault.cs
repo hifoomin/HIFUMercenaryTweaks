@@ -29,7 +29,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void Assaulter2_AuthorityModifyOverlapAttack(On.EntityStates.Merc.Assaulter2.orig_AuthorityModifyOverlapAttack orig, Assaulter2 self, RoR2.OverlapAttack overlapAttack)
         {
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value && self.isAuthority)
             {
                 var finalDamageCoefficient = 3f + (3f * ((self.attackSpeedStat - 1) * (1 / 3f)));
                 self.damageCoefficient = finalDamageCoefficient;

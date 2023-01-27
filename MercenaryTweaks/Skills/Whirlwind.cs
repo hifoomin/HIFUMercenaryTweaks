@@ -68,7 +68,7 @@ namespace HIFUMercenaryTweaks.Skills
                 self.hitPauseTimer = WhirlwindBase.hitPauseDuration;
             }
 
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value && self.isAuthority)
             {
                 var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * (self.overlapAttack.damage / 100f)));
                 self.overlapAttack.damage = finalDamageCoefficient;

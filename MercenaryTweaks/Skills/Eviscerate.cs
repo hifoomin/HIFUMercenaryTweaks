@@ -4,6 +4,8 @@ using RoR2;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using MonoMod.Cil;
+using Mono.Cecil.Cil;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -11,6 +13,7 @@ namespace HIFUMercenaryTweaks.Skills
     {
         public float damageCoefficient;
         public bool improveEvis;
+        public bool removeCameraChanges;
         public override string Name => "Special : Eviscerate";
 
         public override string SkillToken => "special";
@@ -21,14 +24,53 @@ namespace HIFUMercenaryTweaks.Skills
         {
             damageCoefficient = ConfigOption(1.1f, "Damage", "Decimal. Vanilla is 1.1");
             improveEvis = ConfigOption(true, "Improve targetting and enable movement?", "Vanilla is false");
+            removeCameraChanges = ConfigOption(true, "Remove camera changes?", "Vanilla is false");
             base.Init();
         }
 
         public override void Hooks()
         {
             On.EntityStates.Merc.Evis.OnEnter += Evis_OnEnter;
+            if (removeCameraChanges)
+            {
+                IL.EntityStates.Merc.Evis.OnEnter += Evis_OnEnter1;
+                IL.EntityStates.Merc.EvisDash.OnEnter += EvisDash_OnEnter;
+            }
+
             On.EntityStates.Merc.Evis.SearchForTarget += Evis_SearchForTarget;
             On.EntityStates.Merc.Evis.FixedUpdate += Evis_FixedUpdate;
+        }
+
+        private void EvisDash_OnEnter(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(2)))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 3);
+            }
+            else
+            {
+                Main.HMTLogger.LogError("Failed to apply Eviscerate Camera hook");
+            }
+        }
+
+        private void Evis_OnEnter1(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(2)))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 3);
+            }
+            else
+            {
+                Main.HMTLogger.LogError("Failed to apply Eviscerate Camera hook");
+            }
         }
 
         private void Evis_FixedUpdate(On.EntityStates.Merc.Evis.orig_FixedUpdate orig, Evis self)

@@ -22,7 +22,7 @@ namespace HMT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.2";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;
@@ -79,6 +79,8 @@ namespace HMT
                 var evis = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvis.asset").WaitForCompletion();
                 evis.activationStateMachineName = "Evis";
             }
+
+            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         public bool ValidateTweak(TweakBase tb)
