@@ -22,7 +22,7 @@ namespace HMT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.2";
+        public const string PluginVersion = "1.0.3";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
+using System;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -39,6 +40,70 @@ namespace HIFUMercenaryTweaks.Skills
 
             On.EntityStates.Merc.Evis.SearchForTarget += Evis_SearchForTarget;
             On.EntityStates.Merc.Evis.FixedUpdate += Evis_FixedUpdate;
+
+            On.EntityStates.Merc.EvisDash.FixedUpdate += EvisDash_FixedUpdate;
+        }
+
+        private void EvisDash_FixedUpdate(On.EntityStates.Merc.EvisDash.orig_FixedUpdate orig, EvisDash self)
+        {
+            if (improveEvis)
+            {
+                self.stopwatch += Time.fixedDeltaTime;
+                if (self.stopwatch > EvisDash.dashPrepDuration && !self.isDashing)
+                {
+                    self.isDashing = true;
+                    self.dashVector = self.inputBank.aimDirection;
+                    self.CreateBlinkEffect(Util.GetCorePosition(self.gameObject));
+                    self.PlayCrossfade("FullBody, Override", "EvisLoop", 0.1f);
+                    if (self.modelTransform)
+                    {
+                        TemporaryOverlay temporaryOverlay = self.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        temporaryOverlay.duration = 0.6f;
+                        temporaryOverlay.animateShaderAlpha = true;
+                        temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                        temporaryOverlay.destroyComponentOnEnd = true;
+                        temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashBright");
+                        temporaryOverlay.AddToCharacerModel(self.modelTransform.GetComponent<CharacterModel>());
+                        TemporaryOverlay temporaryOverlay2 = self.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        temporaryOverlay2.duration = 0.7f;
+                        temporaryOverlay2.animateShaderAlpha = true;
+                        temporaryOverlay2.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                        temporaryOverlay2.destroyComponentOnEnd = true;
+                        temporaryOverlay2.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
+                        temporaryOverlay2.AddToCharacerModel(self.modelTransform.GetComponent<CharacterModel>());
+                    }
+                }
+                bool flag = self.stopwatch >= EvisDash.dashDuration + EvisDash.dashPrepDuration;
+                if (self.isDashing)
+                {
+                    if (self.characterMotor && self.characterDirection)
+                    {
+                        self.characterMotor.rootMotion += self.dashVector * (self.moveSpeedStat * EvisDash.speedCoefficient * Time.fixedDeltaTime);
+                    }
+                    if (self.isAuthority)
+                    {
+                        Collider[] array = Physics.OverlapSphere(self.transform.position, self.characterBody.radius + EvisDash.overlapSphereRadius * (flag ? EvisDash.lollypopFactor : 1f), LayerIndex.entityPrecise.mask);
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            HurtBox component = array[i].GetComponent<HurtBox>();
+                            if (component && component.teamIndex != self.teamComponent.teamIndex)
+                            {
+                                Evis evis = new();
+                                self.outer.SetNextState(evis);
+                                return;
+                            }
+                        }
+                    }
+                }
+                if (flag && self.isAuthority)
+                {
+                    self.outer.SetNextStateToMain();
+                }
+            }
+            else
+            {
+                orig(self);
+            }
         }
 
         private void EvisDash_OnEnter(ILContext il)
