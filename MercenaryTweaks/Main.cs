@@ -10,7 +10,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
-using HIFUMercenaryTweaks.Skills;
 
 namespace HMT
 {
@@ -22,7 +21,7 @@ namespace HMT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;
@@ -68,17 +67,27 @@ namespace HMT
                 }
             }
 
-            if (Eviscerate.instance.improveEvis)
+            //if (Eviscerate.instance.improveEvis)
             {
                 var merc = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
                 var esm = merc.AddComponent<EntityStateMachine>();
+
                 esm.customName = "Evis";
                 esm.initialStateType = new(typeof(EntityStates.Idle));
                 esm.mainStateType = new(typeof(EntityStates.Idle));
 
+                var nsm = merc.GetComponent<NetworkStateMachine>();
+
+                Array.Resize(ref nsm.stateMachines, nsm.stateMachines.Length + 1);
+                nsm.stateMachines[nsm.stateMachines.Length - 1] = esm;
+
+                // does nothing
+
                 var evis = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvis.asset").WaitForCompletion();
                 evis.activationStateMachineName = "Evis";
             }
+
+            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         public bool ValidateTweak(TweakBase tb)
