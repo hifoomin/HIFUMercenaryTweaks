@@ -81,13 +81,11 @@ namespace HMT
                 Array.Resize(ref nsm.stateMachines, nsm.stateMachines.Length + 1);
                 nsm.stateMachines[nsm.stateMachines.Length - 1] = esm;
 
-                // does nothing
+                // ref is the worst piece of shit ever invented
 
                 var evis = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvis.asset").WaitForCompletion();
                 evis.activationStateMachineName = "Evis";
             }
-
-            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         public bool ValidateTweak(TweakBase tb)
