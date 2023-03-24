@@ -1,5 +1,7 @@
 ﻿using HMT;
 using EntityStates.Merc;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -10,8 +12,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override string SkillToken => "utility_alt1";
 
-        public override string DescText => "<style=cIsDamage>Stunning</style>. Dash forward, dealing <style=cIsDamage>700% damage</style> and <style=cIsUtility>Exposing</style> enemies after <style=cIsUtility>1 second</style>." +
-                                           (scaleDurationWithAttackSpeed ? "" : " <style=cIsUtility>Skill damage scales with attack speed</style>.");
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "<style=cIsDamage>Stunning</style>. Dash forward, dealing <style=cIsDamage>700% damage</style> and <style=cIsUtility>Exposing</style> enemies after <style=cIsUtility>1 second</style>.";
 
         public override void Init()
         {
@@ -24,6 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
             On.EntityStates.Merc.FocusedAssaultPrep.OnEnter += FocusedAssaultPrep_OnEnter;
             On.EntityStates.Merc.FocusedAssaultDash.AuthorityModifyOverlapAttack += FocusedAssaultDash_AuthorityModifyOverlapAttack;
             On.EntityStates.Merc.FocusedAssaultDash.OnEnter += FocusedAssaultDash_OnEnter;
+            Changes();
         }
 
         private void FocusedAssaultDash_AuthorityModifyOverlapAttack(On.EntityStates.Merc.FocusedAssaultDash.orig_AuthorityModifyOverlapAttack orig, FocusedAssaultDash self, RoR2.OverlapAttack overlapAttack)
@@ -54,6 +56,16 @@ namespace HIFUMercenaryTweaks.Skills
             if (scaleDurationWithAttackSpeed == false)
             {
                 self.duration = self.baseDuration;
+            }
+        }
+
+        private void Changes()
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                string[] focusedAssaultKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_STUNNING" };
+                var focusedAssault = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyFocusedAssault.asset").WaitForCompletion();
+                focusedAssault.keywordTokens = focusedAssaultKeywords;
             }
         }
     }

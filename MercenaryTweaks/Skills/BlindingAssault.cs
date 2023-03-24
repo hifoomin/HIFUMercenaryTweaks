@@ -1,6 +1,7 @@
 ﻿using HMT;
 using EntityStates.Merc;
-using UnityEngine;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -11,8 +12,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override string SkillToken => "utility";
 
-        public override string DescText => "<style=cIsDamage>Stunning</style>. Dash forward, dealing <style=cIsDamage>300% damage</style>. If you hit an enemy, <style=cIsDamage>you can dash again</style>, up to <style=cIsDamage>3</style> total." +
-                                           (scaleDurationWithAttackSpeed ? "" : " <style=cIsUtility>Skill damage scales with attack speed</style>.");
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "<style=cIsDamage>Stunning</style>. Dash forward, dealing <style=cIsDamage>300% damage</style>. If you hit an enemy, <style=cIsDamage>you can dash again</style>, up to <style=cIsDamage>3</style> total.";
 
         public override void Init()
         {
@@ -25,6 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
             On.EntityStates.Merc.PrepAssaulter2.OnEnter += PrepAssaulter2_OnEnter;
             On.EntityStates.Merc.Assaulter2.OnEnter += Assaulter2_OnEnter;
             On.EntityStates.Merc.Assaulter2.AuthorityModifyOverlapAttack += Assaulter2_AuthorityModifyOverlapAttack;
+            Changes();
         }
 
         private void Assaulter2_AuthorityModifyOverlapAttack(On.EntityStates.Merc.Assaulter2.orig_AuthorityModifyOverlapAttack orig, Assaulter2 self, RoR2.OverlapAttack overlapAttack)
@@ -54,6 +55,16 @@ namespace HIFUMercenaryTweaks.Skills
             if (scaleDurationWithAttackSpeed == false)
             {
                 self.duration = PrepAssaulter2.baseDuration;
+            }
+        }
+
+        private void Changes()
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                string[] blindingAssaultKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_STUNNING" };
+                var blindingAssault = Addressables.LoadAssetAsync<MercDashSkillDef>("RoR2/Base/Merc/MercBodyAssaulter.asset").WaitForCompletion();
+                blindingAssault.keywordTokens = blindingAssaultKeywords;
             }
         }
     }

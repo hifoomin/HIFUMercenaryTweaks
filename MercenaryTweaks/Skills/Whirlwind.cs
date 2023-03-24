@@ -1,5 +1,7 @@
 ﻿using HMT;
 using EntityStates.Merc;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -10,8 +12,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override string SkillToken => "secondary";
 
-        public override string DescText => "Quickly slice horizontally twice, dealing <style=cIsDamage>2x200% damage</style>. If airborne, slice vertically instead." +
-                                           (scaleDurationWithAttackSpeed ? "" : " <style=cIsUtility>Skill damage scales with attack speed</style>.");
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "Quickly slice horizontally twice, dealing <style=cIsDamage>2x200% damage</style>. If airborne, slice vertically instead.";
 
         public override void Init()
         {
@@ -24,6 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
             On.EntityStates.Merc.WhirlwindBase.OnEnter += WhirlwindBase_OnEnter;
             On.EntityStates.Merc.WhirlwindAir.PlayAnim += WhirlwindAir_PlayAnim;
             On.EntityStates.Merc.WhirlwindGround.PlayAnim += WhirlwindGround_PlayAnim;
+            Changes();
         }
 
         private void WhirlwindGround_PlayAnim(On.EntityStates.Merc.WhirlwindGround.orig_PlayAnim orig, WhirlwindGround self)
@@ -33,13 +35,6 @@ namespace HIFUMercenaryTweaks.Skills
                 self.duration = self.baseDuration;
             }
             orig(self);
-            /*
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
-            {
-                var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * 0.76923077f));
-                self.overlapAttack.damage = finalDamageCoefficient;
-            }
-            */
         }
 
         private void WhirlwindAir_PlayAnim(On.EntityStates.Merc.WhirlwindAir.orig_PlayAnim orig, WhirlwindAir self)
@@ -49,13 +44,6 @@ namespace HIFUMercenaryTweaks.Skills
                 self.duration = self.baseDuration;
             }
             orig(self);
-            /*
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
-            {
-                var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * 0.76923077f));
-                self.overlapAttack.damage = finalDamageCoefficient;
-            }
-            */
         }
 
         private void WhirlwindBase_OnEnter(On.EntityStates.Merc.WhirlwindBase.orig_OnEnter orig, WhirlwindBase self)
@@ -73,6 +61,24 @@ namespace HIFUMercenaryTweaks.Skills
                 var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * (self.overlapAttack.damage / 100f)));
                 self.overlapAttack.damage = finalDamageCoefficient;
             }
+        }
+
+        private void Changes()
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                string[] whirlwindKeywords = new string[] { "KEYWORD_FLEETING" };
+                var whirlwind = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyWhirlwind.asset").WaitForCompletion();
+                whirlwind.keywordTokens = whirlwindKeywords;
+            }
+        }
+
+        private void StartingTheCollapseWhirlwind()
+        {
+        }
+
+        private void NothingCanSaveYouNooow()
+        {
         }
     }
 }

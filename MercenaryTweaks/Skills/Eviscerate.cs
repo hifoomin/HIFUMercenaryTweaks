@@ -6,13 +6,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
-using System;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
     public class Eviscerate : TweakBase<Eviscerate>
     {
         public float damageCoefficient;
+        public float cooldown;
         public bool improveEvis;
         public bool removeCameraChanges;
         public override string Name => "Special : Eviscerate";
@@ -23,9 +25,10 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override void Init()
         {
-            damageCoefficient = ConfigOption(1.1f, "Damage", "Decimal. Vanilla is 1.1");
+            damageCoefficient = ConfigOption(1.3f, "Damage", "Decimal. Vanilla is 1.1");
             improveEvis = ConfigOption(true, "Improve targetting and enable movement?", "Vanilla is false");
             removeCameraChanges = ConfigOption(true, "Remove camera changes?", "Vanilla is false");
+            cooldown = ConfigOption(7f, "Cooldown", "Vanilla is 6");
             base.Init();
         }
 
@@ -42,6 +45,7 @@ namespace HIFUMercenaryTweaks.Skills
             On.EntityStates.Merc.Evis.FixedUpdate += Evis_FixedUpdate;
 
             On.EntityStates.Merc.EvisDash.FixedUpdate += EvisDash_FixedUpdate;
+            Changes();
         }
 
         private void EvisDash_FixedUpdate(On.EntityStates.Merc.EvisDash.orig_FixedUpdate orig, EvisDash self)
@@ -229,6 +233,12 @@ namespace HIFUMercenaryTweaks.Skills
         {
             Evis.damageCoefficient = damageCoefficient;
             orig(self);
+        }
+
+        private void Changes()
+        {
+            var eviscerate = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvis.asset").WaitForCompletion();
+            eviscerate.baseRechargeInterval = cooldown;
         }
     }
 }

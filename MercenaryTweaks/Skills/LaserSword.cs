@@ -1,5 +1,7 @@
 ﻿using HMT;
 using EntityStates.Merc.Weapon;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -10,8 +12,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override string SkillToken => "primary";
 
-        public override string DescText => "<style=cIsUtility>Agile</style>. Slice in front for <style=cIsDamage>130% damage</style>. Every 3rd hit strikes in a greater area and <style=cIsUtility>Exposes</style> enemies." +
-                                           (scaleDurationWithAttackSpeed ? "" : " <style=cIsUtility>Skill damage scales with attack speed</style>.");
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "<style=cIsUtility>Agile</style>. Slice in front for <style=cIsDamage>130% damage</style>. Every 3rd hit strikes in a greater area and <style=cIsUtility>Exposes</style> enemies.";
 
         public override void Init()
         {
@@ -22,6 +23,7 @@ namespace HIFUMercenaryTweaks.Skills
         public override void Hooks()
         {
             On.EntityStates.Merc.Weapon.GroundLight2.OnEnter += GroundLight2_OnEnter;
+            Changes();
         }
 
         private void GroundLight2_OnEnter(On.EntityStates.Merc.Weapon.GroundLight2.orig_OnEnter orig, GroundLight2 self)
@@ -40,6 +42,16 @@ namespace HIFUMercenaryTweaks.Skills
             {
                 var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * (self.overlapAttack.damage / 100f)));
                 self.overlapAttack.damage = finalDamageCoefficient;
+            }
+        }
+
+        private void Changes()
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                string[] laserSwordKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_AGILE" };
+                var laserSword = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercGroundLight2.asset").WaitForCompletion();
+                laserSword.keywordTokens = laserSwordKeywords;
             }
         }
     }

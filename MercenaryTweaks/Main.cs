@@ -10,6 +10,8 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
+using HIFUMercenaryTweaks.Skills;
+using HIFUMercenaryTweaks;
 
 namespace HMT
 {
@@ -21,7 +23,7 @@ namespace HMT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.4";
+        public const string PluginVersion = "1.0.5";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;
@@ -34,6 +36,8 @@ namespace HMT
         {
             HMTLogger = Logger;
             HMTConfig = Config;
+
+            Keywords.Init();
 
             scaleSomeSkillDamageWithAttackSpeed = Config.Bind("Non-Special Skills :: Scaling", "Scale Damage with Attack Speed?", true, "Vanilla is false");
 
@@ -67,7 +71,7 @@ namespace HMT
                 }
             }
 
-            //if (Eviscerate.instance.improveEvis)
+            if (Eviscerate.instance.improveEvis)
             {
                 var merc = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
                 var esm = merc.AddComponent<EntityStateMachine>();

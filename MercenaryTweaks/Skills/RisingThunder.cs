@@ -1,7 +1,7 @@
 ﻿using HMT;
 using EntityStates.Merc;
-using RoR2;
-using IL.RoR2.Achievements;
+using UnityEngine.AddressableAssets;
+using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
@@ -15,8 +15,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override string SkillToken => "secondary_alt1";
 
-        public override string DescText => "Unleash a slicing uppercut, dealing <style=cIsDamage>" + d(damageCoefficient) + " damage</style> and sending you airborne." +
-                                           (scaleDurationWithAttackSpeed ? "" : " <style=cIsUtility>Skill damage scales with attack speed</style>.");
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "Unleash a slicing uppercut, dealing <style=cIsDamage>" + d(damageCoefficient) + " damage</style> and sending you airborne.";
 
         public override void Init()
         {
@@ -31,6 +30,7 @@ namespace HIFUMercenaryTweaks.Skills
         {
             On.EntityStates.Merc.Uppercut.OnEnter += Uppercut_OnEnter;
             On.EntityStates.Merc.Uppercut.PlayAnim += Uppercut_PlayAnim;
+            Changes();
         }
 
         private void Uppercut_PlayAnim(On.EntityStates.Merc.Uppercut.orig_PlayAnim orig, Uppercut self)
@@ -41,13 +41,6 @@ namespace HIFUMercenaryTweaks.Skills
                 self.duration = Uppercut.baseDuration;
             }
             orig(self);
-            /*
-            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
-            {
-                var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * 0.76923077f));
-                self.overlapAttack.damage = finalDamageCoefficient;
-            }
-            */
         }
 
         private void Uppercut_OnEnter(On.EntityStates.Merc.Uppercut.orig_OnEnter orig, Uppercut self)
@@ -61,6 +54,16 @@ namespace HIFUMercenaryTweaks.Skills
             {
                 var finalDamageCoefficient = self.overlapAttack.damage + (self.overlapAttack.damage * ((self.attackSpeedStat - 1) * (self.overlapAttack.damage / 432f)));
                 self.overlapAttack.damage = finalDamageCoefficient;
+            }
+        }
+
+        private void Changes()
+        {
+            if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
+            {
+                string[] risingThunderKeywords = new string[] { "KEYWORD_FLEETING" };
+                var risingThunder = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyUppercut.asset").WaitForCompletion();
+                risingThunder.keywordTokens = risingThunderKeywords;
             }
         }
     }
