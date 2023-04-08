@@ -11,9 +11,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
 using HIFUMercenaryTweaks.Skills;
-using HIFUMercenaryTweaks;
 
-namespace HMT
+namespace HIFUMercenaryTweaks
 {
     [BepInDependency(LanguageAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
@@ -23,7 +22,7 @@ namespace HMT
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.5";
+        public const string PluginVersion = "1.0.6";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;

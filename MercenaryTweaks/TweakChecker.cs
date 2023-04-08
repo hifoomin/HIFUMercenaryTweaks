@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HMT
+namespace HIFUMercenaryTweaks
 {
     public abstract class TweakBase<T> : TweakBase where T : TweakBase<T>
     {

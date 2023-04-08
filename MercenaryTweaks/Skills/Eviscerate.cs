@@ -1,5 +1,4 @@
-﻿using HMT;
-using EntityStates.Merc;
+﻿using EntityStates.Merc;
 using RoR2;
 using System.Linq;
 using UnityEngine;

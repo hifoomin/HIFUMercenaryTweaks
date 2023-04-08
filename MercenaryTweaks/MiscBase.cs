@@ -1,4 +1,4 @@
-﻿namespace HMT
+﻿namespace HIFUMercenaryTweaks
 {
     public abstract class MiscBase
     {

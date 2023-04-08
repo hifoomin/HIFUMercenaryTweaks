@@ -1,5 +1,4 @@
-﻿using HMT;
-using EntityStates.Merc;
+﻿using EntityStates.Merc;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
 

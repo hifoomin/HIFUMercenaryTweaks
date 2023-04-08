@@ -1,6 +1,6 @@
 ﻿using R2API;
 
-namespace HMT
+namespace HIFUMercenaryTweaks
 {
     public abstract class TweakBase
     {
