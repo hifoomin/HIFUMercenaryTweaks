@@ -14,7 +14,8 @@ namespace HIFUMercenaryTweaks.Skills
     {
         public float damageCoefficient;
         public float cooldown;
-        public bool improveEvis;
+        public bool allowMovement;
+        public bool ignoreAllies;
         public bool removeCameraChanges;
         public override string Name => "Special : Eviscerate";
 
@@ -25,7 +26,9 @@ namespace HIFUMercenaryTweaks.Skills
         public override void Init()
         {
             damageCoefficient = ConfigOption(1.3f, "Damage", "Decimal. Vanilla is 1.1");
-            improveEvis = ConfigOption(true, "Improve targetting and enable movement?", "Vanilla is false");
+            allowMovement = ConfigOption(true, "Enable movement and using other skills?", "Vanilla is false");
+            ignoreAllies = ConfigOption(true, "Improve targetting and ignore allies?", "Vanilla is false");
+
             removeCameraChanges = ConfigOption(true, "Remove camera changes?", "Vanilla is false");
             cooldown = ConfigOption(7f, "Cooldown", "Vanilla is 6");
             base.Init();
@@ -49,7 +52,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void EvisDash_FixedUpdate(On.EntityStates.Merc.EvisDash.orig_FixedUpdate orig, EvisDash self)
         {
-            if (improveEvis)
+            if (ignoreAllies)
             {
                 self.stopwatch += Time.fixedDeltaTime;
                 if (self.stopwatch > EvisDash.dashPrepDuration && !self.isDashing)
@@ -143,7 +146,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void Evis_FixedUpdate(On.EntityStates.Merc.Evis.orig_FixedUpdate orig, Evis self)
         {
-            if (improveEvis)
+            if (allowMovement)
             {
                 // self.FixedUpdate();
                 self.stopwatch += Time.fixedDeltaTime;
@@ -206,7 +209,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         private HurtBox Evis_SearchForTarget(On.EntityStates.Merc.Evis.orig_SearchForTarget orig, Evis self)
         {
-            if (improveEvis)
+            if (ignoreAllies)
             {
                 BullseyeSearch bullseyeSearch = new()
                 {

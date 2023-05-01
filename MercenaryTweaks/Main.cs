@@ -2,7 +2,6 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using RoR2;
-using R2API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
 using HIFUMercenaryTweaks.Skills;
+using R2API;
 
 namespace HIFUMercenaryTweaks
 {
@@ -22,7 +22,7 @@ namespace HIFUMercenaryTweaks
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.6";
+        public const string PluginVersion = "1.0.7";
 
         public static ConfigFile HMTConfig;
         public static ManualLogSource HMTLogger;
@@ -70,7 +70,7 @@ namespace HIFUMercenaryTweaks
                 }
             }
 
-            if (Eviscerate.instance.improveEvis)
+            if (Eviscerate.instance.allowMovement)
             {
                 var merc = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
                 var esm = merc.AddComponent<EntityStateMachine>();
