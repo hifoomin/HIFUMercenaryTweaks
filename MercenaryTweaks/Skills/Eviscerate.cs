@@ -25,7 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override void Init()
         {
-            damageCoefficient = ConfigOption<float>(1.3f, "Damage", "Decimal. Vanilla is 1.1");
+            damageCoefficient = ConfigOption(1.3f, "Damage", "Decimal. Vanilla is 1.1");
             allowMovement = ConfigOption(true, "Enable movement and using other skills?", "Vanilla is false");
             ignoreAllies = ConfigOption(true, "Improve targetting and ignore allies?", "Vanilla is false");
 

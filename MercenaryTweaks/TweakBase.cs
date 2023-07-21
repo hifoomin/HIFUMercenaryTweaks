@@ -16,7 +16,7 @@ namespace HIFUMercenaryTweaks
             ConfigManager.HandleConfig<T>(config, Main.HMTBackupConfig, name);
             if (!done)
             {
-                ConfigManager.HandleConfig<T>(Main.scaleSomeSkillDamageWithAttackSpeed, Main.HMTBackupConfig, Main.scaleSomeSkillDamageWithAttackSpeed.Definition.Key);
+                // ConfigManager.HandleConfig<T>(Main.scaleSomeSkillDamageWithAttackSpeed, Main.HMTBackupConfig, Main.scaleSomeSkillDamageWithAttackSpeed.Definition.Key);
                 done = true;
             }
             return config.Value;
