@@ -12,11 +12,11 @@ namespace HIFUMercenaryTweaks.Skills
 {
     public class Eviscerate : TweakBase<Eviscerate>
     {
-        public float damageCoefficient;
-        public float cooldown;
-        public bool allowMovement;
-        public bool ignoreAllies;
-        public bool removeCameraChanges;
+        public static float damageCoefficient;
+        public static float cooldown;
+        public static bool allowMovement;
+        public static bool ignoreAllies;
+        public static bool removeCameraChanges;
         public override string Name => "Special : Eviscerate";
 
         public override string SkillToken => "special";
@@ -25,7 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
 
         public override void Init()
         {
-            damageCoefficient = ConfigOption(1.3f, "Damage", "Decimal. Vanilla is 1.1");
+            damageCoefficient = ConfigOption<float>(1.3f, "Damage", "Decimal. Vanilla is 1.1");
             allowMovement = ConfigOption(true, "Enable movement and using other skills?", "Vanilla is false");
             ignoreAllies = ConfigOption(true, "Improve targetting and ignore allies?", "Vanilla is false");
 

@@ -11,6 +11,7 @@ using UnityEngine.AddressableAssets;
 using RoR2.Skills;
 using HIFUMercenaryTweaks.Skills;
 using R2API;
+using HarmonyLib;
 
 namespace HIFUMercenaryTweaks
 {
@@ -22,23 +23,41 @@ namespace HIFUMercenaryTweaks
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.8";
+        public const string PluginVersion = "1.0.9";
 
         public static ConfigFile HMTConfig;
+        public static ConfigFile HMTBackupConfig;
+
+        public static ConfigEntry<bool> enableAutoConfig { get; set; }
+        public static ConfigEntry<string> latestVersion { get; set; }
+
         public static ManualLogSource HMTLogger;
 
-        private string version = PluginVersion;
-
         public static ConfigEntry<bool> scaleSomeSkillDamageWithAttackSpeed { get; set; }
+
+        public static bool _preVersioning = false;
 
         public void Awake()
         {
             HMTLogger = Logger;
             HMTConfig = Config;
 
-            Keywords.Init();
+            HMTBackupConfig = new(Paths.ConfigPath + "\\" + PluginAuthor + "." + PluginName + ".Backup.cfg", true);
+            HMTBackupConfig.Bind(": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :");
+
+            enableAutoConfig = HMTConfig.Bind("Config", "Enable Auto Config Sync", true, "Disabling this would stop HIFUMercenaryTweaks from syncing config whenever a new version is found.");
+            _preVersioning = !((Dictionary<ConfigDefinition, string>)AccessTools.DeclaredPropertyGetter(typeof(ConfigFile), "OrphanedEntries").Invoke(HMTConfig, null)).Keys.Any(x => x.Key == "Latest Version");
+            latestVersion = HMTConfig.Bind("Config", "Latest Version", PluginVersion, "DO NOT CHANGE THIS");
+            if (enableAutoConfig.Value && (_preVersioning || (latestVersion.Value != PluginVersion)))
+            {
+                latestVersion.Value = PluginVersion;
+                ConfigManager.VersionChanged = true;
+                HMTLogger.LogInfo("Config Autosync Enabled.");
+            }
 
             scaleSomeSkillDamageWithAttackSpeed = Config.Bind("Non-Special Skills :: Scaling", "Scale Damage with Attack Speed?", true, "Vanilla is false");
+
+            Keywords.Init();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(TweakBase))
@@ -70,7 +89,7 @@ namespace HIFUMercenaryTweaks
                 }
             }
 
-            if (Eviscerate.instance.allowMovement)
+            if (Eviscerate.allowMovement)
             {
                 var merc = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercBody.prefab").WaitForCompletion();
                 var esm = merc.AddComponent<EntityStateMachine>();

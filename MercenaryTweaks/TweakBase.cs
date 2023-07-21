@@ -8,10 +8,18 @@ namespace HIFUMercenaryTweaks
         public abstract string SkillToken { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
+        public bool done = false;
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            return Main.HMTConfig.Bind<T>(Name, name, value, description).Value;
+            var config = Main.HMTConfig.Bind<T>(Name, name, value, description);
+            ConfigManager.HandleConfig<T>(config, Main.HMTBackupConfig, name);
+            if (!done)
+            {
+                ConfigManager.HandleConfig<T>(Main.scaleSomeSkillDamageWithAttackSpeed, Main.HMTBackupConfig, Main.scaleSomeSkillDamageWithAttackSpeed.Definition.Key);
+                done = true;
+            }
+            return config.Value;
         }
 
         public abstract void Hooks();
