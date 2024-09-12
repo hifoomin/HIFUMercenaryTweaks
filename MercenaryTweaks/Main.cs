@@ -23,7 +23,7 @@ namespace HIFUMercenaryTweaks
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "HIFUMercenaryTweaks";
-        public const string PluginVersion = "1.0.9";
+        public const string PluginVersion = "1.1.1";
 
         public static ConfigFile HMTConfig;
         public static ConfigFile HMTBackupConfig;

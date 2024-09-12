@@ -1,20 +1,23 @@
 ﻿using EntityStates.Merc;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
+using System.Collections.Generic;
 
 namespace HIFUMercenaryTweaks.Skills
 {
-    internal class RisingThunder : TweakBase
+    internal class RisingThunder : TweakBase<RisingThunder>
     {
         public static bool scaleDurationWithAttackSpeed;
         public static float upwardForce;
         public static float damageCoefficient;
         public static float duration;
+        public static bool agile;
+
         public override string Name => "Secondary :: Rising Thunder";
 
         public override string SkillToken => "secondary_alt1";
 
-        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + "Unleash a slicing uppercut, dealing <style=cIsDamage>" + d(damageCoefficient) + " damage</style> and sending you airborne.";
+        public override string DescText => (Main.scaleSomeSkillDamageWithAttackSpeed.Value ? "<style=cIsDamage>Fleeting</style>. " : "") + (agile ? "<style=cIsUtility>Agile</style>. " : "") + "Unleash a slicing uppercut, dealing <style=cIsDamage>" + d(damageCoefficient) + " damage</style> and sending you airborne.";
 
         public override void Init()
         {
@@ -22,6 +25,7 @@ namespace HIFUMercenaryTweaks.Skills
             upwardForce = ConfigOption(2000f, "Upward Boost Strength", "Vanilla is 3000");
             damageCoefficient = ConfigOption(6f, "Damage", "Decimal. Vanilla is 5.5");
             duration = ConfigOption(0.25f, "Base Duration", "Vanilla is 0.4");
+            agile = ConfigOption(true, "Agile?", "Vanilla is false");
             base.Init();
         }
 
@@ -58,12 +62,18 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void Changes()
         {
+            List<string> risingThunderKeywords = new();
+            var risingThunder = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyUppercut.asset").WaitForCompletion();
             if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
             {
-                string[] risingThunderKeywords = new string[] { "KEYWORD_FLEETING" };
-                var risingThunder = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyUppercut.asset").WaitForCompletion();
-                risingThunder.keywordTokens = risingThunderKeywords;
+                risingThunderKeywords.Add("KEYWORD_FLEETING");
             }
+            if (agile)
+            {
+                risingThunderKeywords.Add("KEYWORD_AGILE");
+                risingThunder.cancelSprintingOnActivation = false;
+            }
+            risingThunder.keywordTokens = risingThunderKeywords.ToArray();
         }
     }
 }

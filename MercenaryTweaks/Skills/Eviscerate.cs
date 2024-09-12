@@ -63,20 +63,23 @@ namespace HIFUMercenaryTweaks.Skills
                     self.PlayCrossfade("FullBody, Override", "EvisLoop", 0.1f);
                     if (self.modelTransform)
                     {
-                        TemporaryOverlay temporaryOverlay = self.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        var characterModel = self.modelTransform.GetComponent<CharacterModel>();
+
+                        var temporaryOverlay = TemporaryOverlayManager.AddOverlay(self.modelTransform.gameObject);
                         temporaryOverlay.duration = 0.6f;
                         temporaryOverlay.animateShaderAlpha = true;
                         temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
                         temporaryOverlay.destroyComponentOnEnd = true;
                         temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashBright");
-                        temporaryOverlay.AddToCharacerModel(self.modelTransform.GetComponent<CharacterModel>());
-                        TemporaryOverlay temporaryOverlay2 = self.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        temporaryOverlay.inspectorCharacterModel = characterModel;
+
+                        var temporaryOverlay2 = TemporaryOverlayManager.AddOverlay(self.modelTransform.gameObject);
                         temporaryOverlay2.duration = 0.7f;
                         temporaryOverlay2.animateShaderAlpha = true;
                         temporaryOverlay2.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
                         temporaryOverlay2.destroyComponentOnEnd = true;
                         temporaryOverlay2.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
-                        temporaryOverlay2.AddToCharacerModel(self.modelTransform.GetComponent<CharacterModel>());
+                        temporaryOverlay2.inspectorCharacterModel = characterModel;
                     }
                 }
                 bool flag = self.stopwatch >= EvisDash.dashDuration + EvisDash.dashPrepDuration;
@@ -170,13 +173,15 @@ namespace HIFUMercenaryTweaks.Skills
                             Vector3 vector = new Vector3(normalized.x, 0f, normalized.y);
                             EffectManager.SimpleImpactEffect(Evis.hitEffectPrefab, position, vector, false);
                             Transform transform = hurtBox.hurtBoxGroup.transform;
-                            TemporaryOverlay temporaryOverlay = transform.gameObject.AddComponent<TemporaryOverlay>();
+
+                            var temporaryOverlay = TemporaryOverlayManager.AddOverlay(self.modelTransform.gameObject);
                             temporaryOverlay.duration = num;
                             temporaryOverlay.animateShaderAlpha = true;
                             temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
                             temporaryOverlay.destroyComponentOnEnd = true;
                             temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matMercEvisTarget");
-                            temporaryOverlay.AddToCharacerModel(transform.GetComponent<CharacterModel>());
+                            temporaryOverlay.inspectorCharacterModel = self.transform.GetComponent<CharacterModel>();
+
                             if (NetworkServer.active)
                             {
                                 DamageInfo damageInfo = new();

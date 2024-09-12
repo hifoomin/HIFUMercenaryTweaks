@@ -1,10 +1,11 @@
 ﻿using EntityStates.Merc.Weapon;
 using UnityEngine.AddressableAssets;
 using RoR2.Skills;
+using System.Collections.Generic;
 
 namespace HIFUMercenaryTweaks.Skills
 {
-    internal class LaserSword : TweakBase
+    internal class LaserSword : TweakBase<LaserSword>
     {
         public static bool scaleDurationWithAttackSpeed;
         public override string Name => "Primary : Laser Sword";
@@ -46,12 +47,15 @@ namespace HIFUMercenaryTweaks.Skills
 
         private void Changes()
         {
+            var laserSword = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercGroundLight2.asset").WaitForCompletion();
+            List<string> keywordTokens = new();
             if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
             {
-                string[] laserSwordKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_AGILE" };
-                var laserSword = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercGroundLight2.asset").WaitForCompletion();
-                laserSword.keywordTokens = laserSwordKeywords;
+                keywordTokens.Add("KEYWORD_FLEETING");
             }
+            keywordTokens.Add("KEYWORD_AGILE");
+            keywordTokens.Add("KEYWORD_EXPOSE");
+            laserSword.keywordTokens = keywordTokens.ToArray();
         }
     }
 }

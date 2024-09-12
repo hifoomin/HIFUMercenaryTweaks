@@ -4,7 +4,7 @@ using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
-    internal class BlindingAssault : TweakBase
+    internal class BlindingAssault : TweakBase<BlindingAssault>
     {
         public static bool scaleDurationWithAttackSpeed;
         public override string Name => "Utility : Blinding Assault";

@@ -4,7 +4,7 @@ using RoR2.Skills;
 
 namespace HIFUMercenaryTweaks.Skills
 {
-    internal class FocusedAssault : TweakBase
+    internal class FocusedAssault : TweakBase<FocusedAssault>
     {
         public static bool scaleDurationWithAttackSpeed;
         public override string Name => "Utility :: Focused Assault";
@@ -62,7 +62,7 @@ namespace HIFUMercenaryTweaks.Skills
         {
             if (Main.scaleSomeSkillDamageWithAttackSpeed.Value)
             {
-                string[] focusedAssaultKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_STUNNING" };
+                string[] focusedAssaultKeywords = new string[] { "KEYWORD_FLEETING", "KEYWORD_STUNNING", "KEYWORD_EXPOSE" };
                 var focusedAssault = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyFocusedAssault.asset").WaitForCompletion();
                 focusedAssault.keywordTokens = focusedAssaultKeywords;
             }
