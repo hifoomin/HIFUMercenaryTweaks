@@ -9,6 +9,7 @@ namespace HIFUMercenaryTweaks.Skills
     {
         public static float damage;
         public static bool agile;
+        public static float sizeMultiplier;
 
         public override string Name => "Special :: Slicing Winds";
 
@@ -20,6 +21,7 @@ namespace HIFUMercenaryTweaks.Skills
         {
             damage = ConfigOption(1f, "Damage", "Decimal. Vanilla is 1");
             agile = ConfigOption(true, "Agile?", "Vanilla is false");
+            sizeMultiplier = ConfigOption(2.5f, "Projectile Size Multiplier", "Makes the projectile easier to hit (as a result, it can get stuck on terrain easier). Vanilla is 1");
             base.Init();
         }
 
@@ -38,7 +40,7 @@ namespace HIFUMercenaryTweaks.Skills
         private void Changes()
         {
             var slicingWinds = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/EvisProjectile.prefab").WaitForCompletion();
-            slicingWinds.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
+            slicingWinds.transform.localScale = Vector3.one * sizeMultiplier;
             var swsd = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/Merc/MercBodyEvisProjectile.asset").WaitForCompletion();
             List<string> keywordTokens = new();
 
